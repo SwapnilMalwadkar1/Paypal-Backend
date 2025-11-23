@@ -1,6 +1,5 @@
 package com.paypal.User_service.util;
 
-import io.jsonwebtoken.io.IOException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,40 +21,25 @@ public class JWTrequestFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain Chain)
-            throws ServletException, IOException {
-
-        // 1. Extract Authorization header
         final String authorizationHeader = request.getHeader("Authorization");
         String username = null;
         String jwt = null;
 
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer")) {
+        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
             jwt = authorizationHeader.substring(7);
-            try {
+            try{
                 username = jwtUtil.extractUsername(jwt);
-
-            } catch (Exception e) {
-                // log
+            }catch (Exception e){
+                //log
             }
-
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null ){
-                if (jwtUtil.validateToken(jwt, username)){
-                    UsernamePasswordAuthenticationToken authToken = new
-                            UsernamePasswordAuthenticationToken(
-                            username, null, null );
-                    authToken.setDetails(new
-                            WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
-
-                }
-
-            }
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            if (jwtUtil.validateToken(jwt, username)) {
+                SecurityContextHolder.getContext().setAuthentication(authToken);
 
         }
+
     }
 
-
 }
+
+
