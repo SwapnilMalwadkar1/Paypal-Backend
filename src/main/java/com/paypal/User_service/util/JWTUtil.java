@@ -58,4 +58,13 @@ public class JWTUtil {
                 .compact();
     }
 
+    public String extractRole(String token) {
+        return (String) Jwts.parser()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("role");
+    }
+
 }
