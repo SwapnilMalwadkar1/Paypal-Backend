@@ -1,4 +1,4 @@
-package com.paypal.user_service.security;
+package com.paypal.User_service.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
